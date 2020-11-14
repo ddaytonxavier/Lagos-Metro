@@ -8,16 +8,21 @@ namespace LastPlayer.LagosMetro
     {
         [SerializeField] private float speed;
         [SerializeField] private Transform player;
-        private float offset;
+        private Vector3 offset;
+
+        public float smoothTime = 0.3F;
+        private Vector3 velocity = Vector3.zero;
 
         private void Start()
         {
-            offset = player.position.z - transform.position.z;
+            offset = player.position - transform.position;
         }
 
-        private void LateUpdate()
+        private void FixedUpdate()
         {
-            transform.position = new Vector3(transform.position.x, transform.position.y, player.position.z - offset);
+            Vector3 newPos = new Vector3(player.position.x, transform.position.y, player.position.z - offset.z);
+            //transform.position = newPos;
+            transform.position = Vector3.SmoothDamp(transform.position, newPos, ref velocity, smoothTime);
         }
     }
 }
