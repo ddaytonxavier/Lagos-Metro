@@ -50,6 +50,7 @@ namespace LastPlayer.LagosMetro
 
             instance.AlertBox.gameObject.SetActive(true);
             instance.PlayerController.enabled = false;
+            instance.PlayerController.Hurt();
         }
 
         public static void NewGame()

@@ -63,8 +63,11 @@ namespace LastPlayer.LagosMetro
                     }
                 }
             }
+        }
 
-            
+        internal void Hurt()
+        {
+            anim.SetTrigger("Hurt");
         }
 
         private void FixedUpdate()
@@ -130,7 +133,7 @@ namespace LastPlayer.LagosMetro
         private void Roll()
         {
             //rb.AddForce(Vector3.up * JumpForce);
-            anim.SetTrigger("CanRoll");
+            //anim.SetTrigger("CanRoll");
         }
 
         private bool Grounded()
