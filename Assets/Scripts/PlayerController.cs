@@ -3,132 +3,134 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+namespace LastPlayer.LagosMetro
 {
-    public float Speed = 10f;
-    private Rigidbody rb;
-    private Collider col;
-    private Animator anim;
-    private float startTime;
-    private Vector2 startPos;
-    private float endTime;
-    private Vector2 endPos;
-    private float swipeDistance;
-    private float swipeTime;
-    private float distToGround;
-
-    [SerializeField]private float minSwipeDist;
-    [SerializeField]private float maxTime;
-    [SerializeField] private float jumpForce;
-    [SerializeField] private float distanceToSideJump;
-
-    private void Awake()
+    public class PlayerController : MonoBehaviour
     {
-        rb = GetComponent<Rigidbody>();
-        col = GetComponent<Collider>();
-        anim = GetComponentInChildren<Animator>();
-    }
+        public float Speed = 10f;
+        private Rigidbody rb;
+        private Collider col;
+        private Animator anim;
+        private float startTime;
+        private Vector2 startPos;
+        private float endTime;
+        private Vector2 endPos;
+        private float swipeDistance;
+        private float swipeTime;
+        private float distToGround;
 
-    private void Start()
-    {
-        distToGround = col.bounds.extents.y;
-        anim.SetBool("IsRunning", true);
-    }
+        [SerializeField] private float minSwipeDist;
+        [SerializeField] private float maxTime;
+        [SerializeField] private float jumpForce;
+        [SerializeField] private float distanceToSideJump;
 
-    private void Update()
-    {
-        if(Input.touchCount > 0)
+        private void Awake()
         {
-            Touch touch = Input.GetTouch(0);   // First touch
+            rb = GetComponent<Rigidbody>();
+            col = GetComponent<Collider>();
+            anim = GetComponentInChildren<Animator>();
+        }
 
-            if (touch.phase == TouchPhase.Began)
+        private void Start()
+        {
+            distToGround = col.bounds.extents.y;
+            anim.SetBool("IsRunning", true);
+        }
+
+        private void Update()
+        {
+            if (Input.touchCount > 0)
             {
+                Touch touch = Input.GetTouch(0);   // First touch
 
-                startTime = Time.time;   // Storing start time
-                startPos = touch.position; // storing start position
-            }
-
-            else if (touch.phase == TouchPhase.Ended)  // Touch ended
-            {
-                endTime = Time.time;
-                endPos = touch.position;
-
-                swipeDistance = (endPos - startPos).magnitude;
-                swipeTime = endTime - startTime;
-
-                if (swipeTime < maxTime && swipeDistance > minSwipeDist)
+                if (touch.phase == TouchPhase.Began)
                 {
-                    Swipe();
+                    startTime = Time.time;   // Storing start time
+                    startPos = touch.position; // storing start position
+                }
+
+                else if (touch.phase == TouchPhase.Ended)  // Touch ended
+                {
+                    endTime = Time.time;
+                    endPos = touch.position;
+
+                    swipeDistance = (endPos - startPos).magnitude;
+                    swipeTime = endTime - startTime;
+
+                    if (swipeTime < maxTime && swipeDistance > minSwipeDist)
+                    {
+                        Swipe();
+                    }
                 }
             }
         }
-    }
 
-    private void FixedUpdate()
-    {
-        MoveForward();
-    }
-
-    private void MoveForward()
-    {
-        Vector3 tempVect = new Vector3(0, 0, 1);
-        tempVect = transform.position + tempVect.normalized * Speed * Time.deltaTime;
-        rb.MovePosition(tempVect);
-    }
-
-    private void Swipe()
-    {
-        Vector2 distance = endPos - startPos;
-
-        if (Mathf.Abs(distance.x) > Mathf.Abs(distance.y))
+        private void FixedUpdate()
         {
-            if (distance.x > 0)
-            {
-                transform.Translate(new Vector3(distanceToSideJump, 0f, 0f));  // move right while flipped
-            }
-
-            if (distance.x < 0)
-            {
-                transform.Translate(new Vector3(-distanceToSideJump, 0f, 0f));  // move left while flipped
-            }
+            MoveForward();
         }
 
-        else if (Mathf.Abs(distance.x) < Mathf.Abs(distance.y))
+        private void MoveForward()
         {
-            if (distance.y > 0)
+            Vector3 tempVect = new Vector3(0, 0, 1);
+            tempVect = transform.position + tempVect.normalized * Speed * Time.deltaTime;
+            rb.MovePosition(tempVect);
+        }
+
+        private void Swipe()
+        {
+            Vector2 distance = endPos - startPos;
+
+            if (Mathf.Abs(distance.x) > Mathf.Abs(distance.y))
             {
-                if (Grounded())
+                if (distance.x > 0)
                 {
-                    Jump();
+                    transform.Translate(new Vector3(distanceToSideJump, 0f, 0f));  // move right while flipped
+                }
+
+                if (distance.x < 0)
+                {
+                    transform.Translate(new Vector3(-distanceToSideJump, 0f, 0f));  // move left while flipped
                 }
             }
 
-            if (distance.y < 0)
+            else if (Mathf.Abs(distance.x) < Mathf.Abs(distance.y))
             {
-                if (!Grounded())
+                if (distance.y > 0)
                 {
-                    rb.AddForce(Vector3.down * jumpForce);
+                    if (Grounded())
+                    {
+                        Jump();
+                    }
                 }
-                else Roll();
+
+                if (distance.y < 0)
+                {
+                    if (!Grounded())
+                    {
+                        rb.AddForce(Vector3.down * jumpForce);
+                    }
+                    else Roll();
+                }
             }
         }
-    }
 
-    [ContextMenu("Jump")]
-    private void Jump()
-    {
-        rb.AddForce(Vector3.up * jumpForce);
-        anim.SetTrigger("CanJump");
-    }
+        [ContextMenu("Jump")]
+        private void Jump()
+        {
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Acceleration);
+            anim.SetTrigger("CanJump");
+        }
 
-    private void Roll()
-    {
-        //rb.AddForce(Vector3.up * JumpForce);
-        anim.SetTrigger("CanRoll");
-    }
+        private void Roll()
+        {
+            //rb.AddForce(Vector3.up * JumpForce);
+            anim.SetTrigger("CanRoll");
+        }
 
-    private bool Grounded()
-    {
-        return Physics.Raycast(transform.position, -Vector3.up, distToGround + 0.1f);
+        private bool Grounded()
+        {
+            return Physics.Raycast(transform.position, -Vector3.up, distToGround + 0.1f);
+        }
     }
 }
