@@ -5,13 +5,15 @@ using UnityEngine;
 
 public class OnDetect_End : MonoBehaviour
 {
+    public bool end = false;
+
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("gg");
         if (other.CompareTag("Player"))
         {
             Debug.Log("gg1");
-            GameManager.EndGame(true);
+            GameManager.EndGame(end);
         }
     }
 }

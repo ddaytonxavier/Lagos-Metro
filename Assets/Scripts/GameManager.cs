@@ -45,6 +45,11 @@ namespace LastPlayer.LagosMetro
             {
                 instance.AlertBox.SetTitle("Demo Failed!");
             }
+
+            TrainMove.stopTrains = true;
+
+            instance.AlertBox.gameObject.SetActive(true);
+            instance.PlayerController.enabled = false;
         }
 
         public static void NewGame()

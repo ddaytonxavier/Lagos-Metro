@@ -63,6 +63,8 @@ namespace LastPlayer.LagosMetro
                     }
                 }
             }
+
+            
         }
 
         private void FixedUpdate()
@@ -83,12 +85,12 @@ namespace LastPlayer.LagosMetro
 
             if (Mathf.Abs(distance.x) > Mathf.Abs(distance.y))
             {
-                if (distance.x > 0)
+                if (distance.x > 0 && transform.position.x != 2)
                 {
                     transform.Translate(new Vector3(distanceToSideJump, 0f, 0f));  // move right while flipped
                 }
 
-                if (distance.x < 0)
+                if (distance.x < 0 && transform.position.x != -2)
                 {
                     transform.Translate(new Vector3(-distanceToSideJump, 0f, 0f));  // move left while flipped
                 }
@@ -113,6 +115,9 @@ namespace LastPlayer.LagosMetro
                     else Roll();
                 }
             }
+
+            //if (transform.position.x > 2) transform.position = new Vector3(2, transform.position.y, transform.position.z);
+            //else if (transform.position.x < -2) transform.position = new Vector3(2, transform.position.y, transform.position.z);
         }
 
         [ContextMenu("Jump")]

@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 464216}
   - component: {fileID: 3381400}
   - component: {fileID: 2300462}
+  - component: {fileID: -7005847867190353234}
+  - component: {fileID: 2384768849280840142}
   m_Layer: 0
   m_Name: SM_Veh_Carriage_Fuel_01
   m_TagString: Untagged
@@ -81,3 +83,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &-7005847867190353234
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 144116}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.1239281, y: 1.5692885, z: 4.1129646}
+  m_Center: {x: 0, y: 0.9321463, z: -2.0564823}
+--- !u!114 &2384768849280840142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 144116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd7bb8c4d0ffc144faa26cdad4629257, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
